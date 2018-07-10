@@ -11,8 +11,8 @@ def _update_id(university_name, _id):
     else:
         return {'ERROR': 'No matching document id.'}
 
-def _update_address(university_name, address, _id):
-    IDB[university_name].update_one({'_id': _id}, {"$set": {"address": address}}, upsert=False)
+def _update_trait(university_name, trait, value, _id):
+    IDB[university_name].update_one({'_id': _id}, {"$set": {trait: value}}, upsert=False)
     doc = IDB[university_name].find_one({"_id": ObjectId(_id)})
     if doc:
         return doc

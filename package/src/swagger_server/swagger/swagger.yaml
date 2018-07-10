@@ -126,6 +126,25 @@ paths:
         405:
           description: "Invalid input"
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
+  /student/all:
+    get:
+      tags:
+      - "student"
+      summary: "retrieve all students belonging to one university"
+      description: ""
+      operationId: "get_all_students"
+      parameters:
+      - in: "query"
+        name: "university_name"
+        description: "name of the university"
+        required: true
+        type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: OK
+      x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/by_db_id:
     get:
       tags:

@@ -1,8 +1,8 @@
 from .creation_functions import (_bulk_create_student_entries,
                                  _create_new_student_entry,
                                  _create_university_collection)
-from .getter_functions import (_get_all_students, _get_student_by_id,
-                               _get_students_by_trait,
+from .getter_functions import (_bulk_get_students_by_id, _get_all_students,
+                               _get_student_by_id, _get_students_by_trait,
                                _get_students_by_trait_regex)
 from .update_functions import _update_id, _update_trait
 
@@ -37,8 +37,11 @@ def get_students_by_race(university_name, race):
 def get_students_by_student_id(university_name, student_id):
     return _get_students_by_trait(university_name, 'student_id', student_id)
 
-def get_students_by_db_id(university_name, db_id):
+def get_student_by_db_id(university_name, db_id):
     return _get_student_by_id(university_name, db_id)
+
+def bulk_get_students_by_id(university_name, db_ids):
+    return _bulk_get_students_by_id(university_name, db_ids)
 
 def get_students_by_address(university_name, address):
     return _get_students_by_trait_regex(university_name, 'address', address)

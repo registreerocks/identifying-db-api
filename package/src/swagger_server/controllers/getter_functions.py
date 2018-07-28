@@ -11,6 +11,12 @@ def _get_student_by_id(university_name, _id):
     else:
         return {'ERROR': 'No matching data found.'}
 
+def _bulk_get_students_by_id(university_name, _ids):
+    students = dict()
+    for _id in _ids:
+        students[_id] = _get_student_by_id(university_name, _id)
+    return students
+
 def _get_students_by_trait(university_name, trait, value):
     result = list(IDB[university_name].find({trait: value}))
     if result:

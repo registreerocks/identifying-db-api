@@ -1,10 +1,8 @@
-from bson.objectid import ObjectId
-
 from .global_vars import IDB
 
 
 def _get_student_by_id(university_name, _id):
-    result = IDB[university_name].find_one({'_id': ObjectId(_id)})
+    result = IDB[university_name].find_one({'_id': _id})
     if result:
         result['_id'] = str(result['_id'])
         return result

@@ -1,7 +1,7 @@
 import mock
 import pytest
 
-from src.swagger_server.controllers.creation_functions import _generate_id
+from src.swagger_server.controllers.general_functions import _generate_id
 
 
 @mock.patch('time.time')

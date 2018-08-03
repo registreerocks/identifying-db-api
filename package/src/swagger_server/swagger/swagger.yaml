@@ -31,8 +31,6 @@ paths:
       responses:
         200:
           description: OK
-        405:
-          description: "Invalid input"
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/create:
     post:
@@ -144,6 +142,8 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/by_db_id:
     get:
@@ -168,27 +168,25 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/bulk_by_db_id:
-    get:
+    post:
       tags:
       - "student"
       summary: "retrieve students by their database id"
       description: ""
       operationId: "bulk_get_students_by_id"
+      consumes:
+      - "application/json"
       parameters:
-      - in: "query"
-        name: "university_name"
-        description: "name of the university"
+      - in: "body"
+        name: "body"
+        description: "University name, student database ids"
         required: true
-        type: "string"
-      - in: "query"
-        name: "db_ids"
-        type: "array"
-        items: 
-          type: "string"
-        required: true
-        description: "students' database id"
+        schema:
+          $ref: "#/definitions/BulkGetStudents"
       produces:
       - "application/json"
       responses:
@@ -218,6 +216,8 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/by_last_name:
     get:
@@ -242,6 +242,8 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/by_gender:
     get:
@@ -266,6 +268,8 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/by_race:
     get:
@@ -290,6 +294,8 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/by_student_id:
     get:
@@ -314,6 +320,8 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/by_address:
     get:
@@ -338,6 +346,8 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/by_birth_year:
     get:
@@ -362,6 +372,8 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
   /student/by_birth_month:
     get:
@@ -386,6 +398,8 @@ paths:
       responses:
         200:
           description: OK
+        409: 
+          description: Conflict
       x-swagger-router-controller: "swagger_server.controllers.identifying_db_API_functions"
 definitions:
   University:
@@ -465,3 +479,14 @@ definitions:
         type: "string"
     xml:
       name: "UpdateAddress"
+  BulkGetStudents:
+    type: "object"
+    properties:
+      university_name:
+        type: "string"
+      db_ids:
+        type: "array"
+        items: 
+          type: "string"
+    xml:
+        name: "BulkGetStudents"

@@ -40,8 +40,8 @@ def get_students_by_student_id(university_name, student_id):
 def get_student_by_db_id(university_name, db_id):
     return _get_student_by_id(university_name, db_id)
 
-def bulk_get_students_by_id(university_name, db_ids):
-    return _bulk_get_students_by_id(university_name, db_ids)
+def bulk_get_students_by_id(body):
+    return _bulk_get_students_by_id(body.get('university_name'), body.get('db_ids'))
 
 def get_students_by_address(university_name, address):
     return _get_students_by_trait_regex(university_name, 'address', address)

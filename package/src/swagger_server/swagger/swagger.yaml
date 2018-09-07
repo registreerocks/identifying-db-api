@@ -39,8 +39,6 @@ paths:
           description: OK
         '401':
           description: Authentication error
-        '405':
-          description: Invalid input
       x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
       requestBody:
         content:
@@ -63,8 +61,6 @@ paths:
           description: OK
         '401':
           description: Authentication error
-        '405':
-          description: Invalid input
       x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
       requestBody:
         content:
@@ -87,8 +83,8 @@ paths:
           description: OK
         '401':
           description: Authentication error
-        '405':
-          description: Invalid input
+        '409':
+          description: Conflict
       x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
       requestBody:
         content:
@@ -109,8 +105,8 @@ paths:
           description: OK
         '401':
           description: Authentication error
-        '405':
-          description: Invalid input
+        '409':
+          description: Conflict
       x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
       requestBody:
         content:
@@ -118,6 +114,30 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateAddress'
         description: 'University name, id, and new address'
+        required: true
+  /student/delete:
+    delete:
+      tags:
+        - student
+      summary: delete a student entry
+      description: ''
+      operationId: delete_student_entry
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authentication error
+        '409':
+          description: Conflict
+      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateId'
+        description: >-
+          University name and student entry that needs to be deleted from the
+          university collection
         required: true
   /student/all:
     get:

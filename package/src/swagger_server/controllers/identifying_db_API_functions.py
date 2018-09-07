@@ -2,6 +2,7 @@ from .authentication import requires_auth, requires_scope
 from .creation_functions import (_bulk_create_student_entries,
                                  _create_new_student_entry,
                                  _create_university_collection)
+from .delete_functions import _delete_student_entry
 from .getter_functions import (_bulk_get_students_by_id, _get_all_students,
                                _get_student_by_id, _get_students_by_trait,
                                _get_students_by_trait_regex)
@@ -87,3 +88,8 @@ def get_students_by_birth_month(university_name, birth_month):
 @requires_scope('admin')
 def get_all_students(university_name):
     return _get_all_students(university_name)
+
+@requires_auth
+@requires_scope('student')
+def delete_student_entry(body):
+    return _delete_student_entry(body.get('university_name'), body.get('id'))

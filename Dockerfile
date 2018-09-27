@@ -1,3 +1,7 @@
+#This API is used to store student information within a mongodb. 
+# An nginx server is used as a reverse proxy for the the Swagger/Flask
+# API managed using Gunicorn, via Supervisord.
+
 FROM python:3.6
 
 #SSL
@@ -26,11 +30,23 @@ WORKDIR connexion
 RUN pip install -e .
 
 # API
-RUN mkdir -p /usr/src/app
-COPY ./package /usr/src/app
-WORKDIR /usr/src/app
-RUN pip3 install -e .
+RUN mkdir -p /usr/src/package
+COPY ./package /usr/src/package
+WORKDIR /usr/src/package
+RUN pip install -e .
 
-EXPOSE 8080
+# Deployment
+# RUN apt-get install nginx supervisor -y
+RUN apt-get install supervisor -y
+RUN pip install gunicorn
 
-CMD ["python3", "-m", "swagger_server"]
+
+# Supervisord
+RUN mkdir -p /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# COPY gunicorn.conf /etc/supervisor/conf.d/gunicorn.conf
+
+# EXPOSE 8080
+
+# Start processes
+CMD ["/usr/bin/supervisord"]

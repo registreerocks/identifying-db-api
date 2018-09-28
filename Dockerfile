@@ -4,17 +4,6 @@
 
 FROM python:3.6
 
-#SSL
-# RUN openssl req \
-#     -new \
-#     -newkey rsa:4096 \
-#     -days 365 \
-#     -nodes \
-#     -x509 \
-#     -subj "/C=ZA/ST=WC/L=CapeTown/O=Registree/CN=www.registree.rocks" \
-#     -keyout server.key \
-#     -out server.cert
-
 # connexion
 RUN mkdir -p /usr/src
 COPY oas3.zip /usr/src
@@ -45,8 +34,6 @@ RUN pip install gunicorn
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # COPY gunicorn.conf /etc/supervisor/conf.d/gunicorn.conf
-
-# EXPOSE 8080
 
 # Start processes
 CMD ["/usr/bin/supervisord"]

@@ -434,8 +434,7 @@ paths:
           description: Conflict
       x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
 servers:
-  - url: 'http://localhost:8080/v0.1'
-  # - url: 'https://localhost:8080/v0.1'
+  - url: 'http://localhost:8000/v0.1'
 components:
   schemas:
     University:

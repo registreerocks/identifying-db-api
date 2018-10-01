@@ -15,7 +15,7 @@ RUN  apt-get update -y && \
 
 RUN unzip oas3.zip
 RUN mv connexion-oas3 connexion
-WORKDIR connexion
+WORKDIR /usr/src/connexion
 RUN pip install -e .
 
 # API
@@ -25,7 +25,6 @@ WORKDIR /usr/src/package
 RUN pip install -e .
 
 # Deployment
-# RUN apt-get install nginx supervisor -y
 RUN apt-get install supervisor -y
 RUN pip install gunicorn
 
@@ -33,7 +32,6 @@ RUN pip install gunicorn
 # Supervisord
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-# COPY gunicorn.conf /etc/supervisor/conf.d/gunicorn.conf
 
 # Start processes
 CMD ["/usr/bin/supervisord"]

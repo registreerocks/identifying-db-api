@@ -11,5 +11,5 @@ setup(
    packages=find_packages('src'),
    package_data={'swagger_server': ['swagger/swagger.yaml']},
 
-   install_requires=['Flask==1.0.2', 'flask_cors', 'pymongo', 'python-dotenv', 'python-jose-cryptodome', 'pytest', 'mock'],
+   install_requires=['flask_cors', 'pymongo', 'python-dotenv', 'python-jose-cryptodome', 'pytest', 'mock'],
 )

@@ -16,26 +16,17 @@ services:
       - mongodb
     networks:
       - backbone
+      - apiaggregator_interconnector
 
   mongodb:
     image: mongo:3.6
     command: mongod
     networks:
       - backbone
-
-  nginx:
-    restart: always
-    build: ./nginx
-    links:
-      - identifying_db_api
-    ports:
-      - "2087:2087"
-    volumes:
-      - ~/cert:/etc/cert
-    networks:
-      - backbone
       
 networks: 
   backbone:
     driver: bridge
+  apiaggregator_interconnector:
+    external: true
     

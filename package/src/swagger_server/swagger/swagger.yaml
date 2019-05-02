@@ -7,26 +7,6 @@ tags:
   - name: Identifying DB API
     description: ''
 paths:
-  /university/create_collection:
-    post:
-      tags:
-        - university
-      summary: create a new university collection
-      description: ''
-      operationId: create_university_collection
-      responses:
-        '200':
-          description: OK
-        '401':
-          description: Authentication error
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/University'
-        description: University object that needs to be added to the database
-        required: true
   /student/create:
     post:
       tags:
@@ -115,13 +95,20 @@ paths:
               $ref: '#/components/schemas/UpdateAddress'
         description: 'University name, id, and new address'
         required: true
-  /student/delete:
+  /student/delete/{id}:
     delete:
       tags:
         - student
       summary: delete a student entry
       description: ''
       operationId: delete_student_entry
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: student's id
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -130,15 +117,6 @@ paths:
         '409':
           description: Conflict
       x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateId'
-        description: >-
-          University name and student entry that needs to be deleted from the
-          university collection
-        required: true
   /student/all:
     get:
       tags:
@@ -146,13 +124,6 @@ paths:
       summary: retrieve all students belonging to one university
       description: ''
       operationId: get_all_students
-      parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -169,12 +140,6 @@ paths:
       description: ''
       operationId: get_student_by_db_id
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: db_id
           required: true
@@ -218,12 +183,6 @@ paths:
       operationId: get_students_by_first_name
       parameters:
         - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
-        - in: query
           name: first_name
           required: true
           description: student's first name
@@ -245,12 +204,6 @@ paths:
       description: ''
       operationId: get_students_by_last_name
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: last_name
           required: true
@@ -274,12 +227,6 @@ paths:
       operationId: get_students_by_gender
       parameters:
         - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
-        - in: query
           name: gender
           required: true
           description: student's gender
@@ -301,12 +248,6 @@ paths:
       description: ''
       operationId: get_students_by_race
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: race
           required: true
@@ -330,12 +271,6 @@ paths:
       operationId: get_students_by_student_id
       parameters:
         - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
-        - in: query
           name: student_id
           required: true
           description: student's id
@@ -357,12 +292,6 @@ paths:
       description: ''
       operationId: get_students_by_address
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: address
           required: true
@@ -386,12 +315,6 @@ paths:
       operationId: get_students_by_birth_year
       parameters:
         - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
-        - in: query
           name: birth_year
           required: true
           description: student's birth year
@@ -414,12 +337,6 @@ paths:
       operationId: get_students_by_birth_month
       parameters:
         - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
-        - in: query
           name: birth_month
           required: true
           description: student's birth month
@@ -437,18 +354,9 @@ servers:
   - url: 'http://localhost:8000/v0.1'
 components:
   schemas:
-    University:
-      type: object
-      properties:
-        university_name:
-          type: string
-      xml:
-        name: University
     Student:
       type: object
       properties:
-        university_name:
-          type: string
         student_data:
           type: object
           properties:
@@ -471,8 +379,6 @@ components:
     Students:
       type: object
       properties:
-        university_name:
-          type: string
         students_data:
           type: array
           items:
@@ -497,8 +403,6 @@ components:
     UpdateId:
       type: object
       properties:
-        university_name:
-          type: string
         id:
           type: string
       xml:
@@ -506,8 +410,6 @@ components:
     UpdateAddress:
       type: object
       properties:
-        university_name:
-          type: string
         id:
           type: string
         address:
@@ -517,8 +419,6 @@ components:
     BulkGetStudents:
       type: object
       properties:
-        university_name:
-          type: string
         db_ids:
           type: array
           items:

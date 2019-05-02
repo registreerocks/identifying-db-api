@@ -11,12 +11,12 @@ from .update_functions import _update_id, _update_trait
 @requires_auth
 @requires_scope('admin', 'registree')
 def create_new_student_entry(body):
-    return _create_new_student_entry(body.get('student_data'))
+    return _create_new_student_entry(body)
 
 @requires_auth
 @requires_scope('admin', 'registree')
 def bulk_create_student_entries(body):
-    return _bulk_create_student_entries(body.get('students_data'))
+    return _bulk_create_student_entries(body)
 
 @requires_auth
 @requires_scope('student', 'registree')

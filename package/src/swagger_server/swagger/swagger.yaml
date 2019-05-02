@@ -173,7 +173,7 @@ paths:
               $ref: '#/components/schemas/BulkGetStudents'
         description: 'University name, student database ids'
         required: true
-        
+
   /student/by_first_name:
     get:
       tags:
@@ -357,47 +357,41 @@ components:
     Student:
       type: object
       properties:
-        student_data:
-          type: object
-          properties:
-            first_name:
-              type: string
-            last_name:
-              type: string
-            date_of_birth:
-              type: string
-            gender:
-              type: string
-            race:
-              type: string
-            address:
-              type: string
-            student_id:
-              type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        date_of_birth:
+          type: string
+        gender:
+          type: string
+        race:
+          type: string
+        address:
+          type: string
+        student_id:
+          type: string
       xml:
         name: Student
     Students:
-      type: object
-      properties:
-        students_data:
-          type: array
-          items:
-            type: object
-            properties:
-              first_name:
-                type: string
-              last_name:
-                type: string
-              date_of_birth:
-                type: string
-              gender:
-                type: string
-              race:
-                type: string
-              address:
-                type: string
-              student_id:
-                type: string
+      type: array
+      items:
+        type: object
+        properties:
+          first_name:
+            type: string
+          last_name:
+            type: string
+          date_of_birth:
+            type: string
+          gender:
+            type: string
+          race:
+            type: string
+          address:
+            type: string
+          student_id:
+            type: string
       xml:
         name: Students
     UpdateId:

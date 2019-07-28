@@ -1,5 +1,5 @@
 from pymongo import MongoClient
 
-client = MongoClient('mongodb://mongodb:27017/')
-db = client.identifying_database
-IDB = db.collection
+CLIENT = MongoClient('mongodb://mongodb:27017/')
+DB = CLIENT.database
+IDB = DB.identifying_db

@@ -49,7 +49,7 @@ def get_students_by_race(race):
     return _get_students_by_trait('race', race)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'registree')
+@requires_scope('admin', 'lecturer', 'student', 'registree')
 def get_students_by_student_id(student_id):
     return _get_students_by_trait('student_id', student_id)
 

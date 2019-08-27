@@ -10,7 +10,7 @@ from jose import jwt
 AUTH0_DOMAIN = env.get("AUTH0_DOMAIN")
 API_IDENTIFIER = env.get("API_IDENTIFIER")
 ALGORITHMS = eval(env.get("ALGORITHMS"))
-VALIDATION = env.get("VALIDATION", True)
+VALIDATION = env.get("VALIDATION", True) != "False"
 
 
 def get_token_auth_header():
@@ -51,7 +51,10 @@ def requires_scope(*required_scopes):
                         return f(*args, **kwargs)
             return {"ERROR": "Invalid scope. Method not allowed for scope " + str(token_scope)}, 401
 
-        return wrapper
+        if VALIDATION:
+            return wrapper
+        else: 
+            return f
 
     return requires_scope_decorator
 
@@ -61,45 +64,48 @@ def requires_auth(f):
     """
     @wraps(f)
     def decorated(*args, **kwargs):
-        if VALIDATION:
-            token = get_token_auth_header()
-            jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
-            jwks = json.loads(jsonurl.read())
+        
+        token = get_token_auth_header()
+        jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
+        jwks = json.loads(jsonurl.read())
+        try:
+            unverified_header = jwt.get_unverified_header(token)
+        except jwt.JWTError:
+            return {"ERROR": "Invalid header. Use an RS256 signed JWT Access Token"}, 401
+        if unverified_header["alg"] == "HS256":
+            return {"ERROR": "Invalid header. Use an RS256 signed JWT Access Token"}, 401
+        rsa_key = {}
+        for key in jwks["keys"]:
+            if key["kid"] == unverified_header["kid"]:
+                rsa_key = {
+                    "kty": key["kty"],
+                    "kid": key["kid"],
+                    "use": key["use"],
+                    "n": key["n"],
+                    "e": key["e"]
+                }
+        if rsa_key:
             try:
-                unverified_header = jwt.get_unverified_header(token)
-            except jwt.JWTError:
-                return {"ERROR": "Invalid header. Use an RS256 signed JWT Access Token"}, 401
-            if unverified_header["alg"] == "HS256":
-                return {"ERROR": "Invalid header. Use an RS256 signed JWT Access Token"}, 401
-            rsa_key = {}
-            for key in jwks["keys"]:
-                if key["kid"] == unverified_header["kid"]:
-                    rsa_key = {
-                        "kty": key["kty"],
-                        "kid": key["kid"],
-                        "use": key["use"],
-                        "n": key["n"],
-                        "e": key["e"]
-                    }
-            if rsa_key:
-                try:
-                    payload = jwt.decode(
-                        token,
-                        rsa_key,
-                        algorithms=ALGORITHMS,
-                        audience=API_IDENTIFIER,
-                        issuer="https://"+AUTH0_DOMAIN+"/"
-                    )
-                except jwt.ExpiredSignatureError:
-                    return {"ERROR": "token is expired"}, 401
-                except jwt.JWTClaimsError:
-                    return {"ERROR": "incorrect claims, please check the audience and issuer"}, 401
-                except Exception:
-                    return {"ERROR": "Unable to parse authentication token."}, 401
+                payload = jwt.decode(
+                    token,
+                    rsa_key,
+                    algorithms=ALGORITHMS,
+                    audience=API_IDENTIFIER,
+                    issuer="https://"+AUTH0_DOMAIN+"/"
+                )
+            except jwt.ExpiredSignatureError:
+                return {"ERROR": "token is expired"}, 401
+            except jwt.JWTClaimsError:
+                return {"ERROR": "incorrect claims, please check the audience and issuer"}, 401
+            except Exception:
+                return {"ERROR": "Unable to parse authentication token."}, 401
 
-                _request_ctx_stack.top.current_user = payload
-                return f(*args, **kwargs)
-            return {"ERROR": "Unable to find appropriate key"}, 401
-        else:
+            _request_ctx_stack.top.current_user = payload
             return f(*args, **kwargs)
-    return decorated
+        return {"ERROR": "Unable to find appropriate key"}, 401
+
+    if VALIDATION: 
+        return decorated
+    else:
+        return f
+

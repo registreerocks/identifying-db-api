@@ -3,7 +3,9 @@ version: '2.1'
 services:
 
   identifying_db_api:
-    image: registree/identifying-db-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8001:8000"
     environment:
@@ -14,19 +16,14 @@ services:
       - mongodb
     networks:
       - backbone
-      - apiaggregator_interconnector
 
   mongodb:
     image: mongo:3.6
     command: mongod
     networks:
       - backbone
-    volumes:
-      - ./mongodata:/data/db
       
 networks: 
   backbone:
     driver: bridge
-  apiaggregator_interconnector:
-    external: true
     

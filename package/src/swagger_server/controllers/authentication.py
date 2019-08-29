@@ -10,6 +10,7 @@ from jose import jwt
 AUTH0_DOMAIN = env.get("AUTH0_DOMAIN")
 API_IDENTIFIER = env.get("API_IDENTIFIER")
 ALGORITHMS = eval(env.get("ALGORITHMS"))
+VALIDATION = env.get("VALIDATION", True) != "False"
 
 
 def get_token_auth_header():
@@ -50,7 +51,10 @@ def requires_scope(*required_scopes):
                         return f(*args, **kwargs)
             return {"ERROR": "Invalid scope. Method not allowed for scope " + str(token_scope)}, 401
 
-        return wrapper
+        if VALIDATION:
+            return wrapper
+        else: 
+            return f
 
     return requires_scope_decorator
 
@@ -60,6 +64,7 @@ def requires_auth(f):
     """
     @wraps(f)
     def decorated(*args, **kwargs):
+        
         token = get_token_auth_header()
         jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
         jwks = json.loads(jsonurl.read())
@@ -98,4 +103,9 @@ def requires_auth(f):
             _request_ctx_stack.top.current_user = payload
             return f(*args, **kwargs)
         return {"ERROR": "Unable to find appropriate key"}, 401
-    return decorated
+
+    if VALIDATION: 
+        return decorated
+    else:
+        return f
+

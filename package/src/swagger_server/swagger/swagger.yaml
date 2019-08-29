@@ -7,39 +7,18 @@ tags:
   - name: Identifying DB API
     description: ''
 paths:
-  /university/create_collection:
-    post:
-      tags:
-        - university
-      summary: create a new university collection
-      description: ''
-      operationId: create_university_collection
-      responses:
-        '200':
-          description: OK
-        '401':
-          description: Authentication error
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/University'
-        description: University object that needs to be added to the database
-        required: true
   /student/create:
     post:
       tags:
         - student
       summary: create a new student entry
       description: ''
-      operationId: create_new_student_entry
+      operationId: swagger_server.controllers.identifying_db_API_functions.create_new_student_entry
       responses:
         '200':
           description: OK
         '401':
           description: Authentication error
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
       requestBody:
         content:
           application/json:
@@ -49,19 +28,19 @@ paths:
           University name and student entry that needs to be added to the
           university collection
         required: true
+
   /student/create_many:
     post:
       tags:
         - student
       summary: bulk create new student entries
       description: ''
-      operationId: bulk_create_student_entries
+      operationId: swagger_server.controllers.identifying_db_API_functions.bulk_create_student_entries
       responses:
         '200':
           description: OK
         '401':
           description: Authentication error
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
       requestBody:
         content:
           application/json:
@@ -71,13 +50,14 @@ paths:
           University name and student entries that needs to be added to the
           university collection
         required: true
+
   /student/update_id:
     post:
       tags:
         - student
       summary: update a student's id
       description: ''
-      operationId: update_id
+      operationId: swagger_server.controllers.identifying_db_API_functions.update_id
       responses:
         '200':
           description: OK
@@ -85,7 +65,6 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
       requestBody:
         content:
           application/json:
@@ -93,13 +72,14 @@ paths:
               $ref: '#/components/schemas/UpdateId'
         description: University name and old id
         required: true
+
   /student/update_address:
     post:
       tags:
         - student
       summary: update a student's address
       description: ''
-      operationId: update_address
+      operationId: swagger_server.controllers.identifying_db_API_functions.update_address
       responses:
         '200':
           description: OK
@@ -107,7 +87,6 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
       requestBody:
         content:
           application/json:
@@ -115,13 +94,21 @@ paths:
               $ref: '#/components/schemas/UpdateAddress'
         description: 'University name, id, and new address'
         required: true
-  /student/delete:
+
+  /student/delete/{id}:
     delete:
       tags:
         - student
       summary: delete a student entry
       description: ''
-      operationId: delete_student_entry
+      operationId: swagger_server.controllers.identifying_db_API_functions.delete_student_entry
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: student's id
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -129,30 +116,14 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateId'
-        description: >-
-          University name and student entry that needs to be deleted from the
-          university collection
-        required: true
+
   /student/all:
     get:
       tags:
         - student
       summary: retrieve all students belonging to one university
       description: ''
-      operationId: get_all_students
-      parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_all_students
       responses:
         '200':
           description: OK
@@ -160,21 +131,15 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
   /student/by_db_id:
     get:
       tags:
         - student
       summary: retrieve one student by his/her database id
       description: ''
-      operationId: get_student_by_db_id
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_student_by_db_id
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: db_id
           required: true
@@ -188,20 +153,19 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
   /student/bulk_by_db_id:
     post:
       tags:
         - student
       summary: retrieve students by their database id
       description: ''
-      operationId: bulk_get_students_by_id
+      operationId: swagger_server.controllers.identifying_db_API_functions.bulk_get_students_by_id
       responses:
         '200':
           description: OK
         '401':
           description: Authentication error
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
       requestBody:
         content:
           application/json:
@@ -209,20 +173,15 @@ paths:
               $ref: '#/components/schemas/BulkGetStudents'
         description: 'University name, student database ids'
         required: true
+
   /student/by_first_name:
     get:
       tags:
         - student
       summary: retrieve all students with a particular first name
       description: ''
-      operationId: get_students_by_first_name
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_students_by_first_name
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: first_name
           required: true
@@ -236,21 +195,15 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
   /student/by_last_name:
     get:
       tags:
         - student
       summary: retrieve all students with a particular last name
       description: ''
-      operationId: get_students_by_last_name
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_students_by_last_name
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: last_name
           required: true
@@ -264,21 +217,15 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
   /student/by_gender:
     get:
       tags:
         - student
       summary: retrieve all students with a particular gender
       description: ''
-      operationId: get_students_by_gender
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_students_by_gender
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: gender
           required: true
@@ -292,21 +239,15 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
   /student/by_race:
     get:
       tags:
         - student
       summary: retrieve all students with a particular race
       description: ''
-      operationId: get_students_by_race
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_students_by_race
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: race
           required: true
@@ -320,21 +261,15 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
   /student/by_student_id:
     get:
       tags:
         - student
       summary: retrieve one student by his/her student id
       description: ''
-      operationId: get_students_by_student_id
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_students_by_student_id
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: student_id
           required: true
@@ -348,21 +283,15 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
   /student/by_address:
     get:
       tags:
         - student
       summary: retrieve students by address characteristica. Can by street or city.
       description: ''
-      operationId: get_students_by_address
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_students_by_address
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: address
           required: true
@@ -376,21 +305,15 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
   /student/by_birth_year:
     get:
       tags:
         - student
       summary: retrieve students by their birth year
       description: ''
-      operationId: get_students_by_birth_year
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_students_by_birth_year
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: birth_year
           required: true
@@ -404,21 +327,15 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
   /student/by_birth_month:
     get:
       tags:
         - student
       summary: retrieve students by their birth month
       description: ''
-      operationId: get_students_by_birth_month
+      operationId: swagger_server.controllers.identifying_db_API_functions.get_students_by_birth_month
       parameters:
-        - in: query
-          name: university_name
-          description: name of the university
-          required: true
-          schema:
-            type: string
         - in: query
           name: birth_month
           required: true
@@ -432,73 +349,54 @@ paths:
           description: Authentication error
         '409':
           description: Conflict
-      x-swagger-router-controller: swagger_server.controllers.identifying_db_API_functions
+
 servers:
   - url: 'http://localhost:8000/v0.1'
 components:
   schemas:
-    University:
-      type: object
-      properties:
-        university_name:
-          type: string
-      xml:
-        name: University
     Student:
       type: object
       properties:
-        university_name:
+        first_name:
           type: string
-        student_data:
-          type: object
-          properties:
-            first_name:
-              type: string
-            last_name:
-              type: string
-            date_of_birth:
-              type: string
-            gender:
-              type: string
-            race:
-              type: string
-            address:
-              type: string
-            student_id:
-              type: string
+        last_name:
+          type: string
+        date_of_birth:
+          type: string
+        gender:
+          type: string
+        race:
+          type: string
+        address:
+          type: string
+        student_id:
+          type: string
       xml:
         name: Student
     Students:
-      type: object
-      properties:
-        university_name:
-          type: string
-        students_data:
-          type: array
-          items:
-            type: object
-            properties:
-              first_name:
-                type: string
-              last_name:
-                type: string
-              date_of_birth:
-                type: string
-              gender:
-                type: string
-              race:
-                type: string
-              address:
-                type: string
-              student_id:
-                type: string
+      type: array
+      items:
+        type: object
+        properties:
+          first_name:
+            type: string
+          last_name:
+            type: string
+          date_of_birth:
+            type: string
+          gender:
+            type: string
+          race:
+            type: string
+          address:
+            type: string
+          student_id:
+            type: string
       xml:
         name: Students
     UpdateId:
       type: object
       properties:
-        university_name:
-          type: string
         id:
           type: string
       xml:
@@ -506,8 +404,6 @@ components:
     UpdateAddress:
       type: object
       properties:
-        university_name:
-          type: string
         id:
           type: string
         address:
@@ -517,18 +413,9 @@ components:
     BulkGetStudents:
       type: object
       properties:
-        university_name:
-          type: string
         db_ids:
           type: array
           items:
             type: string
       xml:
         name: BulkGetStudents
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-security:
-  - bearerAuth: []

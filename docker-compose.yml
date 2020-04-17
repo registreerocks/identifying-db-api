@@ -6,10 +6,8 @@ services:
     image: registree/identifying-db-api:latest
     ports:
       - "8001:8000"
-    environment:
-      AUTH0_DOMAIN: "registree.eu.auth0.com"
-      API_IDENTIFIER: "https://registree.rocks/apis"
-      ALGORITHMS: "['RS256']"
+    env_file:
+      - api.env
     depends_on:
       - mongodb
     networks:
@@ -19,6 +17,8 @@ services:
   mongodb:
     image: mongo:3.6
     command: mongod
+    env_file:
+      - mongo.env
     networks:
       - backbone
     volumes:

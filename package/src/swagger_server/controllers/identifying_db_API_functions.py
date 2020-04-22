@@ -1,4 +1,5 @@
-from .authentication import requires_auth, requires_scope
+from registree_auth import requires_auth, requires_scope
+
 from .creation_functions import (_bulk_create_student_entries,
                                  _create_new_student_entry)
 from .delete_functions import _delete_student_entry

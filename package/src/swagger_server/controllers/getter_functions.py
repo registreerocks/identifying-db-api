@@ -42,3 +42,9 @@ def _stringify_object_id(result):
         element['_id'] = str(element['_id'])
         stringified_result.append(element)
     return stringified_result
+
+def _bulk_get_student_emails_by_id(_ids):
+    students = []
+    for _id in _ids:
+        students.append(_get_student_by_id(_id)['student_id'] + '@myuct.ac.za')
+    return students

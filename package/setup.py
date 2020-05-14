@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
    name='identifying_db_API',
-   version='1.1.1',
+   version='1.1.2',
    maintainer='Sabine Bertram',
    maintainer_email='sabine.bertram@mailbox.org',
    package_dir={'': 'src'},

@@ -8,6 +8,7 @@ from .getter_functions import (_bulk_get_student_emails_by_id,
                                _get_student_by_id, _get_students_by_trait,
                                _get_students_by_trait_regex)
 from .update_functions import _update_id, _update_trait
+from .health import _health_check
 
 
 @requires_auth
@@ -94,3 +95,6 @@ def delete_student_entry(id):
 @requires_scope('registree')
 def bulk_get_student_emails_by_id(body):
     return _bulk_get_student_emails_by_id(body.get('db_ids'))
+
+def health_check():
+    return _health_check()
